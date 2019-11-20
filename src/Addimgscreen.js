@@ -4,6 +4,7 @@ import {Button, Icon} from 'react-native-elements';
 import {Appstyles} from './Appstyles';
 import * as SQLite from 'expo-sqlite';
 import * as Permissions from 'expo-permissions';
+import * as Location from 'expo-location';
 import {Camera} from 'expo-camera';
 
 export default function Addimgscreen() {
@@ -13,12 +14,24 @@ export default function Addimgscreen() {
 
     const [hasCPermission, setCPermission] = useState(null);
     const [url, setUrl] = useState('');
-    const [pin, setPin] = useState('');
+    const [pin, setPin] = useState(null);
     const camera = useRef(null);
 
     useEffect(() => {
+      getLocation();
       askCameraPermission();
     },[]);
+
+    const getLocation = async () => {
+      let { status } = await Permissions.askAsync(Permissions.LOCATION);
+      if (status !== 'granted') {
+      Alert.alert('Soveluksella ei ole kameran käyttölupaa');
+      }
+      else {
+      let location = await Location.getCurrentPositionAsync({});
+          setPin(location);
+      }  
+    };
 
     askCameraPermission = async () => {
       let {status} = await Permissions.askAsync(Permissions.CAMERA);
@@ -36,9 +49,12 @@ export default function Addimgscreen() {
     const db = SQLite.openDatabase('test.db');
 
     addImgView = async () => {
+      const lat = pin.coords.latitude;
+      const lng = pin.coords.longitude;
       if (url != null) {
         db.transaction(tx => {
-          tx.executeSql('insert into test (url) values (?);', [url])
+          tx.executeSql('insert into test (url, location, lat, lng) values (?, ?, ?, ?);',
+          [url, null, lat, lng])
           });
       } 
     }

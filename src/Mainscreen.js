@@ -13,7 +13,7 @@ export default function Mainscreen(props) {
     const [modalVisible, setModalVisible] = useState(false);
     const [gmapVisible, setGmapVisible] = useState(false);
     const [mImg, setMImg] = useState('');
-    const [markers, setMarkers] = use([]);
+    const [markers, setMarkers] = useState([]);
 
     const screenFocus = props.navigation.addListener('willFocus', () => {       
         updateImgList();
@@ -27,7 +27,7 @@ export default function Mainscreen(props) {
         });
         db.transaction(tx => {
             tx.executeSql('create table if not exists test (id integer '+ 
-            'primary key not null, url text, location text, lat integer, lng integer);');
+            'primary key not null, url text, location text, lat real, lng real);');
         });
         clearDb();
         return() => {
@@ -49,8 +49,9 @@ export default function Mainscreen(props) {
         db.transaction(tx => {
             tx.executeSql('select * from test;', [], (_, { rows }) => {
                 const {id, url, location, lat, lng} = rows._array;
-                setImgs(id, url)
-                setMarkers(id, location, lat, lng)
+                console.log(rows._array)
+                //setImgs(id, url)
+                //setMarkers(id, location, lat, lng)
             })
         })
     }
