@@ -10,6 +10,7 @@ export const Appstyles = StyleSheet.create({
     header: {
         flex: 0.1,
         width: Dimensions.get('window').width,
+        marginBottom: 50,
     },
     listView: {
         flex: 1.2,
@@ -25,19 +26,13 @@ export const Appstyles = StyleSheet.create({
         flex: 0.1,
         width: Dimensions.get('window').width/2,
     },
-    input1: {
+    input: {
         flex: 0.2,
         width: 200,
         borderColor: 'gray',
         borderWidth: 1,
-        marginTop: 5,
-    },
-    input2: {
-        flex: 0.2,
-        width: 200,
-        borderColor: 'gray',
-        borderWidth: 1,
-        marginTop: 5,
+        marginTop: 5,    
+        justifyContent: 'center',
     },
     MImg: {
         flex: 1,
