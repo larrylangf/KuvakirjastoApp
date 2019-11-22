@@ -1,5 +1,5 @@
 import React, {useState, useRef, useEffect} from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, TextInput} from 'react-native';
 import {Button, Icon} from 'react-native-elements';
 import {Appstyles} from './Appstyles';
 import * as SQLite from 'expo-sqlite';
@@ -14,6 +14,7 @@ export default function Addimgscreen() {
 
     const [hasCPermission, setCPermission] = useState(null);
     const [url, setUrl] = useState('');
+    const [location, setLocation] = useState('');
     const [pin, setPin] = useState(null);
     const camera = useRef(null);
 
@@ -30,6 +31,7 @@ export default function Addimgscreen() {
       else {
       let location = await Location.getCurrentPositionAsync({});
           setPin(location);
+          console.log(pin.coords)
       }  
     };
 
@@ -46,18 +48,16 @@ export default function Addimgscreen() {
         console.log(url);
     }
 
-    const db = SQLite.openDatabase('test.db');
+    const db = SQLite.openDatabase('app.db');
 
-    addImgView = async () => {
+    const addImgView = () => {
       const lat = pin.coords.latitude;
       const lng = pin.coords.longitude;
-      if (url != null) {
         db.transaction(tx => {
-          tx.executeSql('insert into test (url, location, lat, lng) values (?, ?, ?, ?);',
-          [url, null, lat, lng])
+          tx.executeSql('insert into app (url, location, lat, lng) values (?, ?, ?, ?);',
+          [url, location, lat, lng])
           });
-      } 
-    }
+    } 
 
     if (hasCPermission == null) {
       return <View />;
@@ -69,8 +69,14 @@ export default function Addimgscreen() {
       return(
         <View style={{flex: 1}} >
             <Camera style={{ flex: 1 }} ref={camera} /> 
-          <Button title="Ota kuva" style={Appstyles.button} icon={<Icon name='camera' color='white' />} onPress={snap} />
-          <Button title='Tallenna' style={Appstyles.button} icon={<Icon name='save' color='white' size={20} />} onPress={addImgView} />
+          <Button title="Ota kuva" style={Appstyles.button} icon={<Icon name='camera' color='white' size={20} />} onPress={snap} />
+          <Text style={Appstyles.ititle}>Sijainti:</Text>
+          <TextInput style={Appstyles.input}
+            onChangeText={location => setLocation(location)}
+            value={location}
+            maxLength={25}
+           />
+          <Button title='Tallenna' style={Appstyles.button} icon={<Icon name='save' color='white' size={20} />} onPress={() => addImgView()} />
         </View> 
     );
   }

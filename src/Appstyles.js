@@ -27,12 +27,15 @@ export const Appstyles = StyleSheet.create({
         width: Dimensions.get('window').width/2,
     },
     input: {
-        flex: 0.2,
+        flex: 0.1,
         width: 200,
         borderColor: 'gray',
         borderWidth: 1,
         marginTop: 5,    
         justifyContent: 'center',
+    },
+    ititle: {
+        fontSize: 20,
     },
     MImg: {
         flex: 1,

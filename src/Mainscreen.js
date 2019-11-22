@@ -9,27 +9,26 @@ import MapView from 'react-native-maps';
 export default function Mainscreen(props) {
 
     const {navigate} = props.navigation;
-    const [imgs, setImgs] = useState([]);
+    const [data, setData] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
     const [gmapVisible, setGmapVisible] = useState(false);
     const [mImg, setMImg] = useState('');
-    const [markers, setMarkers] = useState([]);
 
     const screenFocus = props.navigation.addListener('willFocus', () => {       
         updateImgList();
     });
 
-    const db = SQLite.openDatabase('test.db');
+    const db = SQLite.openDatabase('app.db');
 
     useEffect(() => {
         db.transaction(tx => {
             tx.executeSql('drop table if exists test;')
         });
         db.transaction(tx => {
-            tx.executeSql('create table if not exists test (id integer '+ 
+            tx.executeSql('create table if not exists app (id integer '+ 
             'primary key not null, url text, location text, lat real, lng real);');
         });
-        clearDb();
+        //clearDb();
         return() => {
             screenFocus.remove();
         }
@@ -37,28 +36,26 @@ export default function Mainscreen(props) {
     
     const clearDb = () => {
         db.transaction(
-            tx => { tx.executeSql(`delete from test;`);}) 
+            tx => { tx.executeSql(`delete from app;`);}) 
     }
 
     const delImg = (id) => {
         db.transaction(
-            tx => { tx.executeSql(`delete from test where id = ?;`, [id]);}, null, updateImgList) 
+            tx => { tx.executeSql(`delete from app where id = ?;`, [id]);}, null, updateImgList) 
     }
     
     const updateImgList = () => {
         db.transaction(tx => {
-            tx.executeSql('select * from test;', [], (_, { rows }) => {
-                const {id, url, location, lat, lng} = rows._array;
-                console.log(rows._array)
-                //setImgs(id, url)
-                //setMarkers(id, location, lat, lng)
+            tx.executeSql('select * from app;', [], (_, { rows }) => {
+                setData(rows._array)
+                console.log(data)
             })
         })
     }
     
     const toggleModal = (visible, id, gvisible) => {
         db.transaction(tx => {
-            tx.executeSql('select * from test where id = ?;', [id], (_, { rows }) => {
+            tx.executeSql('select * from app where id = ?;', [id], (_, { rows }) => {
                     setMImg(rows._array[0].url);
                 }
             );
@@ -66,10 +63,6 @@ export default function Mainscreen(props) {
         setModalVisible(visible);
         setGmapVisible(gvisible);
     }
-
-    const pins = markers.map((marker) => {
-        <MapView.Marker coordinate={marker.lat, marker.lng} title={marker.location} key={marker.id} />
-    });
 
         return(
             <View style={Appstyles.container}>
@@ -87,7 +80,7 @@ export default function Mainscreen(props) {
                             <Button icon={<Icon name="delete" color="white" size={20} />} title="Poista" onPress={() => delImg(item.id)} />
                         </View>
                         } 
-                        data={imgs} 
+                        data={data} 
                     />
                 </View> 
                     <View style={Appstyles.button}>
@@ -107,7 +100,7 @@ export default function Mainscreen(props) {
                         </View>
                         <Button icon={<Icon name="arrow-back" color="white" size={20} />} onPress={() => setModalVisible(!modalVisible)} title='Takaisin' />
                     </Modal>
-                {/* <Modal
+                    <Modal
                         visible={gmapVisible}
                         animationIn="slideIn"
                         animationInTiming={1500}
@@ -119,13 +112,16 @@ export default function Mainscreen(props) {
                             latitude: 60.3289292,
                             longitude: 24.9024031,
                             latitudeDelta: 0.09,
-                            longitudeDelta: 0.01
+                            longitudeDelta: 0.0025
                             }}
                         >
-                       {pins}
+                        {data.map(marker => (
+                          <MapView.Marker coordinate={{latitude: marker.lat, longitude: marker.lng}} 
+                            title={marker.location} key={marker.id} />
+                        ))}
                         </MapView>
-                        <Button icon={<Icon name="arrow-back" color="black" size={20} />} onPress={() => setGmapVisible(!gmapVisible)} title='Takaisin' />
-                    </Modal> */}
+                        <Button icon={<Icon name="arrow-back" color="white" size={20} />} onPress={() => setGmapVisible(!gmapVisible)} title='Takaisin' />
+                    </Modal> 
                 </View>
         );
 }
