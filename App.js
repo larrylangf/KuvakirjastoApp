@@ -11,8 +11,24 @@ export default function App() {
   );
 }
 const myApp = createStackNavigator({
-  Home: {screen: Mainscreen},
-  Add: {screen: Addimgscreen}
+  Home: {
+    screen: Mainscreen, 
+    navigationOptions: {
+      header: null
+    }
+  },
+  Add: {
+    screen: Addimgscreen,
+    navigationOptions: {
+      title: 'Lisää kuva',
+      headerTitleStyle: {color: '#f7f7f7', fontSize: 24},
+      headerStyle: {
+        height: 60,
+        backgroundColor: '#ff6f00'
+      },
+      headerTintColor: '#f7f7f7'
+    }
+  }
 });
 
 const Appcontainer = createAppContainer(myApp);

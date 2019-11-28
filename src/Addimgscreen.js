@@ -8,10 +8,6 @@ import * as Location from 'expo-location';
 import {Camera} from 'expo-camera';
 
 export default function Addimgscreen() {
-    navigationOptions = {
-      title: 'Lisää kuva',
-      headerStyle: Appstyles.header
-    };
 
     const [hasCPermission, setCPermission] = useState(null);
     const [url, setUrl] = useState('');
@@ -92,19 +88,19 @@ export default function Addimgscreen() {
         <View style={{flex: 1}} >
             <Camera style={{ flex: 1.5 }} ref={camera} /> 
           <View style={Appstyles.addcontainer}>
-            <Button title="Ota kuva" style={Appstyles.button} icon={<Icon name='camera' color='white' size={20} />} onPress={snap} />
-            <Input style={Appstyles.input1} label="Etsi osoitteella"
-              onChangeText={address => setAddress(address)}
-              value={address}
-              maxLength={50}
-             />
-             <Button title='Etsi' icon={<Icon name='search' color='white' size={20} />} onPress={() => searchByAddress()} />
-            <Input style={Appstyles.input2} label="Sijainti"
-              onChangeText={location => setLocation(location)}
-              value={location}
-              maxLength={25}
-            />
-            <Button title='Tallenna' style={Appstyles.button} icon={<Icon name='save' color='white' size={20} />} onPress={() => addImgView()} />
+            <Button containerStyle={Appstyles.button1} buttonStyle={{backgroundColor: '#ff6f00'}} title="Ota kuva" titleStyle={{fontSize: 20}} icon={<Icon name='camera' color='#f7f7f7' size={24} />} onPress={snap} />
+              <Input placeholder="Etsi osoitteella" containerStyle={Appstyles.icontainer}
+                onChangeText={address => setAddress(address)}
+                value={address}
+                maxLength={50}
+              />
+             <Button containerStyle={Appstyles.button2} buttonStyle={{backgroundColor: '#ff6f00'}} title='Etsi' titleStyle={{fontSize: 20}} icon={<Icon name='search' color='#f7f7f7' size={24} />} onPress={() => searchByAddress()} />
+              <Input placeholder="Sijainti" containerStyle={Appstyles.icontainer}
+                onChangeText={location => setLocation(location)}
+                value={location}
+                maxLength={25}
+              />
+            <Button title='Tallenna' titleStyle={{fontSize: 20}} containerStyle={Appstyles.button2} buttonStyle={{backgroundColor: '#ff6f00'}} icon={<Icon name='save' color='#f7f7f7' size={24} />} onPress={() => addImgView()} />
           </View>
         </View> 
     );

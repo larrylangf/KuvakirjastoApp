@@ -1,57 +1,77 @@
 import {StyleSheet, Dimensions} from 'react-native';
-import {ScreenOrientation} from 'expo';
 
 export const Appstyles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#fff',
+        backgroundColor: '#fff'
     },
     addcontainer: {
         flex: 0.8,
         justifyContent: 'center',
         alignItems: 'center',
+        marginBottom: 10
     },
     header: {
-        flex: 0.3,
-        color: '#fff', 
-        fontSize: 20, 
-        fontWeight: '700',
-        backgroundColor: '#3399ff',
+        height: 60,
+        justifyContent: 'center',
         alignItems: 'center'
     },
     listView: {
-        flex: 1,
+        flex: 1.5,
         flexDirection: 'row',
         justifyContent: 'center',
+        alignItems: 'center'
+    },
+    listitem: {
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 120,
+        width: 120
     },
     img: {
         height: 120,
         width: 120,
-        resizeMode: "contain", 
+        resizeMode: "contain" 
+    },
+    bcontainer: {
+        flex: 0.3
     },
     button: {
-        flex: 0.25,
-        width: Dimensions.get('window').width/2,
+        height: 40,
+        width: 180,
+        marginTop: 10
     },
-    input1: {
-        flex: 0.8,
-        marginTop: 5,    
+    button1: {
+        height: 30,
+        width: 120,
         marginBottom: 5
+    }, 
+    button2: {
+        height: 30,
+        width: 120
     },
-    input2: {
-        flex: 0.5,
-        marginTop: 5,    
-        marginBottom: 10
+    icontainer: {
+        height: 50,
+        width: 250,
+        alignItems: 'center',
+        marginTop: 15
+    },
+    mbutton: {
+        height: 50,
+        width: Dimensions.get('window').width,
+        backgroundColor: '#ff6f00',
+        marginBottom: 18
     },
     modal: {
         flex: 1,
-        backgroundColor: 'black'
+        backgroundColor: '#000'
     },
     mimg: {
-        width: Dimensions.get('window').width/1.4,
-        height: Dimensions.get('window').height/1.2,
-        resizeMode: "contain",
+        width: Dimensions.get('window').width,
+        height: Dimensions.get('window').height/1.05,
+        resizeMode: "contain"
     },
 });
