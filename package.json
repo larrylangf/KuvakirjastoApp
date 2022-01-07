@@ -9,7 +9,8 @@
   },
   "dependencies": {
     "braces": "^2.3.1",
-    "expo": "^35.0.0",
+    "dotenv": "^10.0.0",
+    "expo": "^44.0.4",
     "expo-camera": "~7.0.0",
     "expo-cli": "^3.9.1",
     "expo-location": "~7.0.0",

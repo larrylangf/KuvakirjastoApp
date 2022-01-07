@@ -1,16 +1,19 @@
-# KuvakirjastoApp 
+# Kuvakirjasto 
 
 
-### Henkilökohtainen projekti react native frameworkillä ja expo app ympärissä
+### Henkilökohtainen lokaali mobiilisovellusprojekti React native sovelluskehyksellä ja expo app ympäristössä <br> Toteutettiin osana mobiiliohjelmoinnin kurssia 2019 syksyllä
 
+### Päätoiminnallisuudet:
 
-### Pääominaisuudet:
+### Taustasovellus (backend)
+
+**Kuvat tallentuvat SQLite-tietokantaan lokaalisti**
+
+### Käyttöliittymä (frontend)
 
 **Kuvat näkyvät etusivulla kuvalistauksena**	
 
 **Painettaessa kuvaa kuva avautuu suurennettuna omaan ikkunaan etusivun päälle**
-
-**Kuvat tallentuvat tietokantaan**
 
 **Kuvia voi lisätä puhelimen kameralla listaukseen**
 

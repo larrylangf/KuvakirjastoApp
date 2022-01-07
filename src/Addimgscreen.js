@@ -46,7 +46,7 @@ export default function Addimgscreen() {
     }
 
     const searchByAddress = () => {
-      let url = 'http://www.mapquestapi.com/geocoding/v1/address?key=ihyoBPbv8v81NYUfrVRffI8xIi3LSfuY&street='+address+'&country=Finland';
+      let url = 'http://www.mapquestapi.com/geocoding/v1/address?key='+process.env.MAPQUEST_API_KEY+'+&street='+address+'&country=Finland';
       fetch(url)
       .then((response) => response.json())
       .then((resJson) => { 
