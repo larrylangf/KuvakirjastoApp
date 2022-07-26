@@ -12,39 +12,37 @@ export default function Mainscreen(props) {
     const [mVisible, setMVisible] = useState(false);
     const [gmapVisible, setGmapVisible] = useState(false);
     const [mImg, setMImg] = useState('');
-
-    const screenFocus = props.navigation.addListener('willFocus', () => {       
-        updateImgList();
-    });
-
     const db = SQLite.openDatabase('app.db');
+
+    const updateImgList = () => db.transaction(tx => {
+        tx.executeSql('select * from app;', [], (_, { rows }) => {
+            setData(rows._array)
+        })
+    })
 
     useEffect(() => {
         db.transaction(tx => {
             tx.executeSql('create table if not exists app (id integer '+ 
             'primary key not null, url text, location text, lat real, lng real);');
         });
+        const screenFocus = props.navigation.addListener('willFocus', () => {
+            updateImgList();
+        });
+        updateImgList();
         return() => {
             screenFocus.remove();
         }
-    },[]);
+    }, []);
     
     const delImg = (id) => {
         db.transaction(
             tx => { tx.executeSql(`delete from app where id = ?;`, [id]);}, null, updateImgList) 
     }
-    
-    const updateImgList = () => {
-        db.transaction(tx => {
-            tx.executeSql('select * from app;', [], (_, { rows }) => {
-                setData(rows._array)
-            })
-        })
-    }
 
     const rowData = data.map((item) => (
           <ListItem key={item.id} containerStyle={Appstyles.listitem}
             onPress={() => toggleModal(true, item.id, false)}
+            // Kuva ei näy etusivun listauksessa
             title={<Image style={Appstyles.img} source={{uri: item.url}}  />}   
             onLongPress={() => delImg(item.id)}
           />
@@ -99,10 +97,11 @@ export default function Mainscreen(props) {
                     <MapView
                         style={{flex: 1}}
                         initialRegion={{
-                        latitude: 60.1990445,
-                        longitude: 24.9248416,
-                        latitudeDelta: 0.09,
-                        longitudeDelta: 0.02
+                        // Karttanäkymä avautuu pituus- ja leveyskoordinaattien perusteella
+                        latitude: 62.242565,
+                        longitude: 25.7542948,
+                        latitudeDelta: 0.1,
+                        longitudeDelta: 0.05
                         }}>
                         {data.map(marker => (
                         <MapView.Marker coordinate={{latitude: marker.lat, longitude: marker.lng}} 

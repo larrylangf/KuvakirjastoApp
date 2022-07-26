@@ -3,9 +3,9 @@ import {View, Text, Alert} from 'react-native';
 import {Button, Icon, Input} from 'react-native-elements';
 import {Appstyles} from './Appstyles';
 import * as SQLite from 'expo-sqlite';
-import * as Permissions from 'expo-permissions';
 import * as Location from 'expo-location';
 import {Camera} from 'expo-camera';
+import Mainscreen from './Mainscreen';
 
 export default function Addimgscreen() {
 
@@ -19,21 +19,23 @@ export default function Addimgscreen() {
     useEffect(() => {
       getLocation();
       askCameraPermission();
+      return () => {}
     },[]);
 
     const getLocation = async () => {
-      let { status } = await Permissions.askAsync(Permissions.LOCATION);
+      let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
       Alert.alert('Soveluksella ei ole sijainnin käyttölupaa');
       }
       else {
       let location = await Location.getCurrentPositionAsync({});
           setPin(location);
+          <Mainscreen lpin={location} />
       }  
     };
 
     askCameraPermission = async () => {
-      let {status} = await Permissions.askAsync(Permissions.CAMERA);
+      let {status} = await Camera.requestCameraPermissionsAsync();
       setCPermission(status);
     }
 
@@ -70,7 +72,7 @@ export default function Addimgscreen() {
     } 
 
     const updateImgView = () => {
-      db.transaction(tx => {
+      const q = db.transaction(tx => {
           tx.executeSql('select * from app;', [], (_, { rows }) =>
               console.log(rows._array)
           );
@@ -100,7 +102,7 @@ export default function Addimgscreen() {
                 value={location}
                 maxLength={25}
               />
-            <Button title='Tallenna' titleStyle={{fontSize: 20}} containerStyle={Appstyles.button2} buttonStyle={{backgroundColor: '#ff6f00'}} icon={<Icon name='save' color='#f7f7f7' size={24} />} onPress={() => addImgView()} />
+            <Button title='Tallenna' titleStyle={{fontSize: 20}} containerStyle={Appstyles.button2} buttonStyle={{backgroundColor: '#ff6f00'}} icon={<Icon name='save' color='#f7f7f7' size={24} />} onPress={() => {addImgView();Alert.alert('Tallennettu')}} />
           </View>
         </View> 
     );
